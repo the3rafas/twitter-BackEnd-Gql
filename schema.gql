@@ -1,0 +1,267 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PageInfo {
+  page: Int
+  limit: Int
+  nextCursor: String
+  beforeCursor: String
+  hasNext: Boolean!
+  hasBefore: Boolean!
+  totalCount: Float
+  totalPages: Float
+}
+
+type Like {
+  twitteId: String!
+  userId: String!
+  twitte: Twitte!
+}
+
+type Twitte {
+  id: ID!
+  content: String
+  photo: String
+  userId: String!
+  users: [User!]
+  likesTwitte: [Like!]
+  commentsTwitte: [Comment!]
+}
+
+type Comment {
+  id: ID!
+  content: String
+  photo: String
+  twitteId: String!
+  userId: String!
+  twitte: Twitte!
+}
+
+type Follower {
+  id: ID!
+
+  """userId"""
+  followerId: String!
+  followingId: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  userName: String!
+  name: String!
+  bio: String
+  email: String
+  gender: UserRoleEnum!
+  verifiedPhone: String
+  profilePicture: String
+  twittes: [Twitte!]
+  followers: [Follower!]
+  likesTwitte: [Like!]
+  comment: [Comment!]
+}
+
+enum UserRoleEnum {
+  MALE
+  FEMALE
+}
+
+type loginResponde {
+  access_Token: String!
+  user: User!
+}
+
+type GqlStringResponse {
+  data: String
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlBooleanResponse {
+  data: Boolean
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlloginRespondeResponse {
+  data: loginResponde
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlTwitteResponse {
+  data: Twitte
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlTwittesArrayResponse {
+  data: [Twitte]
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlTwittesPagination {
+  items: [Twitte]
+  pageInfo: PageInfo!
+}
+
+type GqlTwittesResponse {
+  data: GqlTwittesPagination
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlCommentResponse {
+  data: Comment
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlCommentsArrayResponse {
+  data: [Comment]
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlUserResponse {
+  data: User
+  code: Int!
+  success: Boolean!
+  message: String
+}
+
+type GqlUsersPagination {
+  items: [User]
+  pageInfo: PageInfo!
+}
+
+type GqlFollowersPagination {
+  items: [Follower]
+  pageInfo: PageInfo!
+}
+
+scalar Timestamp
+
+scalar JSON
+
+"""Upload custom scalar type"""
+scalar Upload
+
+type Query {
+  me: GqlUserResponse!
+  findTwitteruser(userName: String!): GqlUserResponse!
+  checkFollowUser(followingId: String!): Boolean!
+  findAllTwittes(input: PaginationInput!, filter: FilterPgInput!): GqlTwittesResponse!
+  findAllTwittesForUser(userName: String!): GqlTwittesArrayResponse!
+  findAllComment(TwitteId: String!): GqlCommentsArrayResponse!
+  logIn(loginInput: LogInInput!): GqlloginRespondeResponse!
+}
+
+input PaginationInput {
+  sort: String
+  page: Float
+  limit: Float
+}
+
+input FilterPgInput {
+  searchKey: String
+  photo: Boolean
+  content: Boolean
+  both: Boolean
+  gender: GenderEnum
+}
+
+enum GenderEnum {
+  MALE
+  FEMALE
+}
+
+input LogInInput {
+  userName: String!
+  password: String!
+}
+
+type Mutation {
+  uploadFile(file: Upload!, model: FileModelEnum!): GqlStringResponse!
+  createTwitteruser(input: CreateUserInput!): GqlUserResponse!
+  updateTwitteruser(input: CreateUserInput!): GqlUserResponse!
+  followUser(followingId: String!): GqlBooleanResponse!
+  unfollowUser(followingId: String!): GqlBooleanResponse!
+  SentCodeMail(input: SendeMailValidatorInput!): GqlBooleanResponse!
+  verifyAcount(input: emailValidatorInput!): GqlBooleanResponse!
+  resetPaaword(input: ResetPasswordINput!): GqlBooleanResponse!
+  createTwitte(input: CreateTwitteInput!): GqlTwitteResponse!
+  delete(id: String!): GqlBooleanResponse!
+  like(id: String!): GqlBooleanResponse!
+  unlike(id: String!): GqlBooleanResponse!
+  createComment(input: CreateCommentInput!): GqlCommentResponse!
+  deleteComment(commentId: String!): GqlBooleanResponse!
+}
+
+enum FileModelEnum {
+  USERS
+  EXPERTISE_LEVELS
+  DOCTOR_SCHS
+  DOCTOR_DOCUMENT
+  PROFILE_PICTURE
+  FAMILY_MEMBER_PROFILE
+  CONSULTATIONS_ATTACHMENTS
+  APPOINTMENT_MESSAGES
+}
+
+input CreateUserInput {
+  userName: String!
+  name: String!
+  bio: String
+  email: String!
+  password: String!
+  birthDate: Timestamp
+  phoneNumber: String!
+  gender: UserRoleEnum!
+  profilePicture: String
+}
+
+input SendeMailValidatorInput {
+  email: String!
+  useCase: UserVerificationCodeUseCaseEnum!
+}
+
+enum UserVerificationCodeUseCaseEnum {
+  PASSWORD_RESET
+  PHONE_VERIFICATION
+  EMAIL_VERIFICATION
+}
+
+input emailValidatorInput {
+  email: String!
+  code: String!
+  useCase: UserVerificationCodeUseCaseEnum!
+}
+
+input ResetPasswordINput {
+  email: String!
+  code: String!
+  password: String!
+  useCase: UserVerificationCodeUseCaseEnum!
+}
+
+input CreateTwitteInput {
+  content: String
+  photo: String
+}
+
+input CreateCommentInput {
+  content: String
+  photo: String
+  twitteId: String!
+}
