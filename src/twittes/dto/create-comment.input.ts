@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { InputType, Field } from '@nestjs/graphql';
 import {
   IsNotEmpty,
@@ -15,10 +16,10 @@ export class CreateCommentInput {
   @Length(0, 700, {
     message: (args: ValidationArguments) => {
       if (args.value.length >= 700) {
-        throw new BaseHttpException(ErrorCodeEnum.ERROR_USER_USERNAME_MAX);
+        throw new BaseHttpException(ErrorCodeEnum.ERROR_TWITTE_MAX);
         return '';
       } else if (args.value.length <= 0) {
-        throw new BaseHttpException(ErrorCodeEnum.ERROR_USER_USERNAME_MIN);
+        throw new BaseHttpException(ErrorCodeEnum.ERROR_TWITTE_MIN);
         return '';
       }
     },
@@ -34,9 +35,9 @@ export class CreateCommentInput {
   @IsNotEmpty({
     message: (args: ValidationArguments) => {
       if (args.value.length === 0) {
-        throw new BaseHttpException(
-          ErrorCodeEnum.ERROR_EMPTY,
+        throw new HttpException(
           `${args.property} can not be empty`,
+          HttpStatus.BAD_REQUEST,
         );
         return '';
       }

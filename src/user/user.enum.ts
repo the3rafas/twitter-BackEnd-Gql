@@ -11,3 +11,9 @@ export enum GenderEnum {
   FEMALE = 'FEMALE',
 }
 registerEnumType(GenderEnum, { name: 'GenderEnum' });
+
+export enum LangEnum {
+  EN = 'EN',
+  AR = 'AR',
+}
+registerEnumType(LangEnum, { name: 'LangEnum' });

@@ -17,6 +17,7 @@ export interface IDataLoaders {
   commentLoader: CommentLoaderType;
   likeLoader: likeLoaderType;
   twitteLoader: TwitteLoaderType;
+  followingLoader: FollowereLoaderType;
   followerLoader: FollowereLoaderType;
   userLoader: UserLoaderType;
   likesTwitteLoader: likesTwitteLoader;

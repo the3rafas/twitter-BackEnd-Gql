@@ -88,14 +88,14 @@ export class twitterUserResolver {
 
   // -------------------------- FOllower --------------------------------------
 
-  @UseGuards(JwtAuthGuard)
-  @Query(() => Boolean, { name: 'checkFollowUser' })
-  async checkFollow(
-    @Args('followingId') followingId: string,
-    @GetUser('id') userId: string,
-  ) {
-    return await this.userServ.checkFollowUser(followingId, userId);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Query(() => Boolean, { name: 'checkFollowUser' })
+  // async checkFollow(
+  //   @Args('followingId') followingId: string,
+  //   @GetUser('id') userId: string,
+  // ) {
+  //   return await this.userServ.checkFollowUser(followingId, userId);
+  // }
 
   // ################################### Resolver ##################################################
   @ResolveField(() => [Twitte], { nullable: true })
@@ -116,6 +116,16 @@ export class twitterUserResolver {
     const { id } = parent;
 
     return await loaders.followerLoader.load(id);
+  }
+
+  @ResolveField(() => [Follower], { nullable: true })
+  async following(
+    @Parent() parent: User,
+    @Context('loaders') loaders: IDataLoaders,
+  ) {
+    const { id } = parent;
+
+    return await loaders.followingLoader.load(id);
   }
   @ResolveField(() => [Like], { nullable: true })
   async likesTwitte(

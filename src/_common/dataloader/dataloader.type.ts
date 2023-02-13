@@ -17,6 +17,7 @@ export type CommentTwitteLoader = DataLoader<string, Comment[]>;
 export type UserDataLoaderType = {
   commentLoader: CommentLoaderType;
   likeLoader: likeLoaderType;
+  followingLoader: FollowereLoaderType;
   followerLoader: FollowereLoaderType;
   twitteLoader: TwitteLoaderType;
 };

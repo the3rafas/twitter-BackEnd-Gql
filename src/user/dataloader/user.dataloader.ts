@@ -38,6 +38,10 @@ export class UserDataloader implements IDataLoaderService {
     const twitteLoader: TwitteLoaderType = new DataLoader(
       async (senderIds: string[]) => await this.findTwittesByIds(senderIds),
     );
+    const followingLoader: FollowereLoaderType = new DataLoader(
+      async (senderIds: string[]) => await this.findFollowingsByIds(senderIds),
+    );
+
     const followerLoader: FollowereLoaderType = new DataLoader(
       async (senderIds: string[]) => await this.findFollowersByIds(senderIds),
     );
@@ -47,11 +51,13 @@ export class UserDataloader implements IDataLoaderService {
     const commentLoader: CommentLoaderType = new DataLoader(
       async (senderIds: string[]) => await this.findCommentsByIds(senderIds),
     );
+
     return {
       twitteLoader,
-      followerLoader,
+      followingLoader,
       likeLoader,
       commentLoader,
+      followerLoader,
     };
   }
 
@@ -81,7 +87,24 @@ export class UserDataloader implements IDataLoaderService {
 
     return [...usersIds.map((id) => arrayMap[id])];
   }
+
   private async findFollowersByIds(usersIds: string[]) {
+    const followers = await this.followerRepo.findAll(
+      {
+        followingId: { [Op.in]: usersIds },
+      },
+      [User],
+    );
+    const arrayMap = await this.helper.sortDataLoader(
+      Follower,
+      followers,
+      'followingId',
+    );
+
+    return [...usersIds.map((id) => arrayMap[id])];
+  }
+
+  private async findFollowingsByIds(usersIds: string[]) {
     const followers = await this.followerRepo.findAll(
       {
         followerId: { [Op.in]: usersIds },

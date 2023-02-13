@@ -5,7 +5,6 @@ import { DatabaseError } from 'sequelize';
 import { IGqlErrorResponse } from '../graphql/graphql-response.type';
 import { BaseHttpException } from './base-http-exception';
 import { MessageSource } from './errors';
-
 // Catch any error type
 @Catch()
 export class HttpExceptionFilter implements GqlExceptionFilter {

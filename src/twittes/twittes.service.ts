@@ -68,15 +68,15 @@ export class TwittesService {
     return this.twitteRepo.findPaginated({}, '-createdAt', 1, 5);
   }
 
-  async findAllForUser(userName: string) {
-    try {
-      return await this.twitteRepo.findAll({
-        photo: { [Op.ne]: '' },
-      });
-    } catch (error) {
-      throw new BaseHttpException(ErrorCodeEnum.USER_DOES_NOT_EXIST);
-    }
-  }
+  // async findAllForUser(userName: string) {
+  //   try {
+  //     return await this.twitteRepo.findAll({
+  //       photo: { [Op.ne]: '' },
+  //     });
+  //   } catch (error) {
+  //     throw new BaseHttpException(ErrorCodeEnum.USER_DOES_NOT_EXIST);
+  //   }
+  // }
 
 
   async delete(id: string, userId: string): Promise<Boolean> {
@@ -133,7 +133,7 @@ export class TwittesService {
       },
     });
 
-    if (!like) throw new BaseHttpException(ErrorCodeEnum.TWITTE_DOES_NOT_EXIST);
+    if (!like) throw new BaseHttpException(ErrorCodeEnum.LIKE_DOES_NOT_EXIST);
 
     await like.destroy();
 

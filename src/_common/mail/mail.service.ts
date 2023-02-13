@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { MailBoxInput } from '../../email-verification/email-Validator.interface';
+import { MailBoxInput } from './mail.interface';
 const nodemailer = require('nodemailer');
 
 @Injectable()

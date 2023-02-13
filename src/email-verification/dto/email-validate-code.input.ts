@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { InputType, Field } from '@nestjs/graphql';
 import {
   IsString,
@@ -6,6 +7,7 @@ import {
   MinLength,
   IsEmail,
   IsEnum,
+  ValidationArguments,
 } from 'class-validator';
 import { UserVerificationCodeUseCaseEnum } from '../email-Validator.interface';
 
@@ -30,18 +32,48 @@ export class emailValidatorInput {
 export class ResetPasswordINput {
   @Field()
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: (args: ValidationArguments) => {
+      if (args.value.length === 0) {
+        throw new HttpException(
+          `${args.property} can not be empty`,
+          HttpStatus.BAD_REQUEST,
+        );
+        return '';
+      }
+    },
+  })
   @IsEmail()
   email: string;
 
   @Field()
   code: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: (args: ValidationArguments) => {
+      if (args.value.length === 0) {
+        throw new HttpException(
+          `${args.property} can not be empty`,
+          HttpStatus.BAD_REQUEST,
+        );
+        return '';
+      }
+    },
+  })
   @Field()
   password: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: (args: ValidationArguments) => {
+      if (args.value.length === 0) {
+        throw new HttpException(
+          `${args.property} can not be empty`,
+          HttpStatus.BAD_REQUEST,
+        );
+        return '';
+      }
+    },
+  })
   @IsEnum(UserVerificationCodeUseCaseEnum)
   @Field(() => UserVerificationCodeUseCaseEnum)
   useCase: UserVerificationCodeUseCaseEnum;

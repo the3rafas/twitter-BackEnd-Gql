@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, ValidationArguments } from 'class-validator';
 import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
@@ -10,9 +11,9 @@ export class LogInInput {
   @IsNotEmpty({
     message: (args: ValidationArguments) => {
       if (args.value.length === 0) {
-        throw new BaseHttpException(
-          ErrorCodeEnum.ERROR_EMPTY,
+        throw new HttpException(
           `${args.property} can not be empty`,
+          HttpStatus.BAD_REQUEST,
         );
         return '';
       }
@@ -24,9 +25,9 @@ export class LogInInput {
   @IsNotEmpty({
     message: (args: ValidationArguments) => {
       if (args.value.length === 0) {
-        throw new BaseHttpException(
-          ErrorCodeEnum.ERROR_EMPTY,
+        throw new HttpException(
           `${args.property} can not be empty`,
+          HttpStatus.BAD_REQUEST,
         );
         return '';
       }

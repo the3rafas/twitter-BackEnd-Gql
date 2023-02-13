@@ -25,6 +25,13 @@ export class twitterUserService {
   ) {}
   // ###################### User ########################
   async createUser(input: CreateUserInput): Promise<User> {
+    const checkExisting = await this.userRepo.findOne({
+      [Op.or]: [{ userName: input.userName }, { email: input.email }],
+    });
+
+    if (checkExisting) {
+      throw new BaseHttpException(ErrorCodeEnum.EMAIL_UserName_ALREADY_EXISTS);
+    }
     input.password = await bcrypt.hash(input.password, 10);
     const dataHandeller = this.userTrans.HandelCreartion(input);
     return await this.userRepo.findOrCreate(
@@ -83,31 +90,36 @@ export class twitterUserService {
         { followerId, followingId },
         { followerId, followingId },
       );
-    }
-
-    return true;
-  }
-
-  async checkFollowUser(
-    followingId: string,
-    followerId: string,
-  ): Promise<Boolean> {
-    try {
-      const check = await this.followerRepo.findOne({
-        [Op.and]: {
-          followerId,
-          followingId,
-        },
-      });
-      return check ? true : false;
-    } catch (error) {
+      return true;
+    } else {
       throw new BaseHttpException(ErrorCodeEnum.USER_DOES_NOT_EXIST);
     }
   }
+
+  // async checkFollowUser(
+  //   followingId: string,
+  //   followerId: string,
+  // ): Promise<Boolean> {
+  //   try {
+  //     const check = await this.followerRepo.findOne({
+  //       [Op.and]: {
+  //         followerId,
+  //         followingId,
+  //       },
+  //     });
+  //     return check ? true : false;
+  //   } catch (error) {
+  //     throw new BaseHttpException(ErrorCodeEnum.USER_DOES_NOT_EXIST);
+  //   }
+  // }
   async deleteFollowUser(
     followingId: string,
     followerId: string,
   ): Promise<Boolean> {
+    const followeing = await this.userRepo.findOne({ id: followingId });
+    if (!followeing)
+      throw new BaseHttpException(ErrorCodeEnum.USER_DOES_NOT_EXIST);
+
     try {
       const check = await this.followerRepo.findOne({
         [Op.and]: {

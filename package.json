@@ -21,10 +21,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage --detectOpenHandles --forceExit --logHeapUsage --verbose --runInBand",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "preseed": "rimraf dist && nest build",
-    "seed": "node ./dist/_common/database/seeders",
-    "migrate": "bash ./migrate.sh",
-    "migration:new": "cross-env-shell sequelize migration:generate --name $MIG_NAME"
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",

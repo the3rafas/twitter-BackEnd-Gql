@@ -90,10 +90,10 @@ export class TwittesResolver {
     return await this.twitteServ.findAll(filter, input);
   }
 
-  @Query(() => GqlTwittesResponse, { name: 'findAllTwittesForUser' })
-  async findAllForUser(@Args('userName') userName: string) {
-    return await this.twitteServ.findAllForUser(userName);
-  }
+  // @Query(() => GqlTwittesResponse, { name: 'findAllTwittesForUser' })
+  // async findAllForUser(@Args('userName') userName: string) {
+  //   return await this.twitteServ.findAllForUser(userName);
+  // }
 
   // @Query(() => GqlTwittesPgResponse, { name: 'ds' })
   // async findAllForUxser() {

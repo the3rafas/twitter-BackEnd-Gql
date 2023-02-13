@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { Field, InputType } from '@nestjs/graphql';
 import {
   IsBoolean,
@@ -55,9 +56,9 @@ export class UpdteUserInput {
   @IsNotEmpty({
     message: (args: ValidationArguments) => {
       if (args.value.length === 0) {
-        throw new BaseHttpException(
-          ErrorCodeEnum.ERROR_EMPTY,
+        throw new HttpException(
           `${args.property} can not be empty`,
+          HttpStatus.ACCEPTED,
         );
         return '';
       }
@@ -66,36 +67,6 @@ export class UpdteUserInput {
   @IsEmail()
   @Field({ nullable: true })
   email?: string;
-
-  @IsNotEmpty({
-    message: (args: ValidationArguments) => {
-      if (args.value.length === 0) {
-        throw new BaseHttpException(
-          ErrorCodeEnum.ERROR_EMPTY,
-          `${args.property} can not be empty`,
-        );
-        return '';
-      }
-    },
-  })
-  @MinLength(6, {
-    message: (args: ValidationArguments) => {
-      if (args.value.length <= 6) {
-        throw new BaseHttpException(ErrorCodeEnum.ERROR_USER_USERNAME_MIN);
-        return '';
-      }
-    },
-  })
-  @IsString({
-    message: (args: ValidationArguments) => {
-      if (typeof args.value === 'string') {
-        throw new BaseHttpException(ErrorCodeEnum.ERROR_STRING);
-        return '';
-      }
-    },
-  })
-  @Field({ nullable: true })
-  password?: string;
 
   @IsOptional()
   @Field((type) => Timestamp, { nullable: true })

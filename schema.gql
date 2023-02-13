@@ -58,6 +58,7 @@ type User {
   profilePicture: String
   twittes: [Twitte!]
   followers: [Follower!]
+  following: [Follower!]
   likesTwitte: [Like!]
   comment: [Comment!]
 }
@@ -95,13 +96,6 @@ type GqlloginRespondeResponse {
 
 type GqlTwitteResponse {
   data: Twitte
-  code: Int!
-  success: Boolean!
-  message: String
-}
-
-type GqlTwittesArrayResponse {
-  data: [Twitte]
   code: Int!
   success: Boolean!
   message: String
@@ -160,9 +154,7 @@ scalar Upload
 type Query {
   me: GqlUserResponse!
   findTwitteruser(userName: String!): GqlUserResponse!
-  checkFollowUser(followingId: String!): Boolean!
   findAllTwittes(input: PaginationInput!, filter: FilterPgInput!): GqlTwittesResponse!
-  findAllTwittesForUser(userName: String!): GqlTwittesArrayResponse!
   findAllComment(TwitteId: String!): GqlCommentsArrayResponse!
   logIn(loginInput: LogInInput!): GqlloginRespondeResponse!
 }
