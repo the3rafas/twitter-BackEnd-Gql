@@ -142,7 +142,7 @@ export class twitterUserService {
   }
 
   @Cron(CronExpression.EVERY_6_MONTHS)
-  async deleteUnValidUser() {
+  async deleteUnValidUser(): Promise<void> {
     const users = await this.userRepo.findAll({
       verifiedPhone: { [Op.eq]: null },
     });
@@ -157,6 +157,7 @@ export class twitterUserService {
       await e.destroy();
     });
   }
+
   // ###################### Friend ########################
   // async addFriend(followingId: string, followerId: string): Promise<Boolean> {
   //   try {

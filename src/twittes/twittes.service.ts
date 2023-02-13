@@ -78,7 +78,6 @@ export class TwittesService {
   //   }
   // }
 
-
   async delete(id: string, userId: string): Promise<Boolean> {
     const twitte = await this.twitteRepo.findOne({
       id,
@@ -142,7 +141,10 @@ export class TwittesService {
 
   // ########################## Comment  #######################################
 
-  async addComment(input: CreateCommentInput, userId: string) {
+  async addComment(
+    input: CreateCommentInput,
+    userId: string,
+  ): Promise<Comment> {
     if (!input.photo && !input.content) {
       throw new BaseHttpException(ErrorCodeEnum.U_CANT_ENTER_EMPTY_COMMENT);
     }
@@ -159,7 +161,7 @@ export class TwittesService {
     }
   }
 
-  async FindAllComment(twitteId: string) {
+  async FindAllComment(twitteId: string): Promise<Comment[]> {
     return await this.commentRepo.findAll({
       twitteId,
     });

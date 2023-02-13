@@ -7,9 +7,6 @@ import { User } from 'src/user/entity/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
 import { ErrorCodeEnum } from 'src/_common/exceptions/error-code.enum';
-import { GqlExecutionContext } from '@nestjs/graphql';
-// import { UsersService } from 'src/users/users.service';
-// import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -25,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any, context: ExecutionContext): Promise<User> {
+  async validate(payload: any): Promise<User> {
     const { sub: id } = payload;
     const user: User = await this.userRepo.findOne({ id });
     if (!user) {

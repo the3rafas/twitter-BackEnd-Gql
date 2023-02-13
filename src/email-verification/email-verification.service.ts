@@ -50,13 +50,16 @@ export class EmailVerificationService {
     if (!verificationCode.code)
       throw new BaseHttpException(ErrorCodeEnum.VERIFICATION_CODE_NOT_EXIST);
 
-    if (verificationCode.expiryDate < new Date())
+    if (verificationCode.expiryDate < new Date()) {
+      await verificationCode.destroy();
       throw new BaseHttpException(ErrorCodeEnum.EXPIRED_VERIFICATION_CODE);
+    }
+
     return verificationCode;
   }
   // ##################### GENERATE AND SEND CODE  #####################
 
-  async sendCodeToMail(input: SendeMailValidatorInput) {
+  async sendCodeToMail(input: SendeMailValidatorInput):Promise<Boolean> {
     const user: User = await this.userRepo.findOne({ email: input.email });
 
     const generatedCode = this.generateVerificationCodeAndExpiryDate();
