@@ -11,6 +11,7 @@ import { Op } from 'sequelize';
 import * as bcrypt from 'bcrypt';
 import { Twitte } from 'src/twittes/entity/twitter-twittes.entity';
 import { Friend } from './entity/friend.entity';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class twitterUserService {
@@ -140,6 +141,22 @@ export class twitterUserService {
     }
   }
 
+  @Cron(CronExpression.EVERY_6_MONTHS)
+  async deleteUnValidUser() {
+    const users = await this.userRepo.findAll({
+      verifiedPhone: { [Op.eq]: null },
+    });
+    users.forEach(async (e) => {
+      let actualDate: number = new Date().getHours();
+      let eDate: number = new Date(e.createdAt).getHours();
+
+      if (eDate === actualDate || eDate === actualDate - 1) {
+        return '';
+      }
+
+      await e.destroy();
+    });
+  }
   // ###################### Friend ########################
   // async addFriend(followingId: string, followerId: string): Promise<Boolean> {
   //   try {
