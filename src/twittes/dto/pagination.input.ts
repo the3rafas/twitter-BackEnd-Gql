@@ -8,8 +8,11 @@ import {
   IsUUID,
   IsBoolean,
   IsEnum,
+  ValidationArguments,
 } from 'class-validator';
 import { GenderEnum } from 'src/user/user.enum';
+import { BaseHttpException } from 'src/_common/exceptions/base-http-exception';
+import { ErrorCodeEnum } from 'src/_common/exceptions/error-code.enum';
 
 @InputType()
 export class WhereInput {
@@ -23,7 +26,17 @@ export class WhereInput {
 @InputType()
 export class PaginationInput {
   @IsOptional()
-  @Length(0, 700)
+  @Length(0, 700, {
+    message: (args: ValidationArguments) => {
+      if (args.value.length >= 700) {
+        throw new BaseHttpException(ErrorCodeEnum.ERROR_USER_USERNAME_MAX);
+        return '';
+      } else if (args.value.length <= 0) {
+        throw new BaseHttpException(ErrorCodeEnum.ERROR_USER_USERNAME_MIN);
+        return '';
+      }
+    },
+  })
   @Field({ nullable: true })
   sort?: string;
 

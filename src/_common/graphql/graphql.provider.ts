@@ -19,7 +19,6 @@ export class GqlConfigService implements GqlOptionsFactory {
     private readonly authService: IContextAuthService,
     @Inject(DataloaderService)
     private readonly dataloaderService: IDataLoaderService,
-
   ) {}
 
   createGqlOptions(): ApolloDriverConfig {
@@ -34,7 +33,6 @@ export class GqlConfigService implements GqlOptionsFactory {
       // installSubscriptionHandlers: true,
       context: async ({ req, extra }) => {
         let currentUser: User;
-
 
         // Auth for subscription connections
         if (extra && extra.currentUser) currentUser = extra.currentUser;

@@ -24,4 +24,8 @@ export const enErrorMessage: IErrorMessage = {
   U_CANT_ENTER_EMPTY_TWITTE: 'U can not enter empty twitte',
   U_CANT_ENTER_EMPTY_COMMENT: 'U can not enter empty comment',
   USER_EMAIL_IS_VERIFIED: 'user is already valid',
+  ERROR_USER_USERNAME_MIN: 'Min lenth is 4',
+  ERROR_USER_USERNAME_MAX: 'Max lenth is 16',
+  ERROR_EMPTY: 'this feild can not be empty',
+  ERROR_STRING: 'this feild must be string',
 };
