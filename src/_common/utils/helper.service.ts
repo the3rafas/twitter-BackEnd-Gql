@@ -22,12 +22,14 @@ export class HelperService {
       })[0]
     }`.toLowerCase();
   }
-  async sortDataLoader(model, array: (typeof model)[], key: string) {
+  async sortDataLoader(
+    model,
+    array: (typeof model)[],
+    key: string,
+  ): Promise<{}> {
     let userMap: { [key: string]: (typeof model)[] } = {};
 
     array.forEach((e) => {
-      // console.log(key);
-
       if (userMap[e[key]]) {
         userMap[e[key]] = [...userMap[e[key]], e];
       } else {
